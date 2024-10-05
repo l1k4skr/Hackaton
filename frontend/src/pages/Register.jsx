@@ -1,4 +1,3 @@
-
 import styles from '../styles/RegisterStyles.module.css'; // Importa el CSS Module
 
 const Register = () => {
