@@ -10,7 +10,9 @@ function EventCard({ event }) {
       <div className={styles.eventInfo}>
         <h3>{event.title}</h3>
         <p>{event.description}</p>
-        <button onClick={() => alert('Implementar compra')}>Comprar Ticket</button>
+        <div>
+            <button onClick={() => alert('Implementar compra')}>Comprar Ticket</button>
+        </div>
       </div>
     </div>
   );

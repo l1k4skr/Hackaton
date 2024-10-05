@@ -28,6 +28,12 @@
     font-size: 14px;
     color: #666;
   }
+
+  .eventInfo div {
+    display: flex;
+    justify-content: end;
+    
+  }
   
   .eventInfo button {
     background-color: #007BFF;

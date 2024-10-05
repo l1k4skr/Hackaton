@@ -1,11 +1,16 @@
 import React from "react";
 
 
-const Layout = ({ children }) => {
+const Layout = (props) => {
+    const { tipo_usuario, children } = props;
     return (
         <div>
-        <h1>Layout</h1>
-        {children}
+            <header>
+                <h1>{tipo_usuario}</h1>
+            </header>
+            {children}
         </div>
     );
+
     }
+export default Layout;
