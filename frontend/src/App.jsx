@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import './App.css'
+import './styles/App.css'
 
 function App() {
 
@@ -9,7 +9,7 @@ function App() {
       <Router>
         <Route path='/' exact>
           <h1>Home</h1>
-          
+
         </Route>
       </Router>
     </>
