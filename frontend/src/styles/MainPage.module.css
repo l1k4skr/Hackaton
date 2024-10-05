@@ -1,0 +1,10 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+}
+.log {
+    margin-top: 20px;
+}
+.queue {
+    margin-bottom: 20px;
+}
