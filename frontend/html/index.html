@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Simulación de Compra de Tickets</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+            }
+            .log {
+                margin-top: 20px;
+            }
+        </style>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        />
+        <!-- Google Fonts Roboto -->
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
+        />
+        <!-- MDB -->
+        <link rel="stylesheet" href="css/mdb.min.css" />
+    </head>
+    <header>
+        <style>
+            #intro {
+                background-image: url("https://mdbootstrap.com/img/new/fluid/city/018.jpg");
+                height: 100vh;
+            }
+
+            /* Height for devices larger than 576px */
+            @media (min-width: 992px) {
+                #intro {
+                    margin-top: -58.59px;
+                }
+            }
+
+            .navbar .nav-link {
+                color: #fff !important;
+            }
+        </style>
+
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark d-none d-lg-block" style="z-index: 2000">
+            <div class="container-fluid">
+                <!-- Navbar brand -->
+                <a
+                    class="navbar-brand nav-link"
+                    target="_blank"
+                    href="https://mdbootstrap.com/docs/standard/"
+                >
+                    <strong>TICKESITO</strong>
+                </a>
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-mdb-collapse-init
+                    data-mdb-target="#navbarExample01"
+                    aria-controls="navbarExample01"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarExample01">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item active">
+                            <a class="nav-link" aria-current="page" href="#intro">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                class="nav-link"
+                                href="https://www.youtube.com/channel/UC5CF7mLQZhvx8O5GODZAhdA"
+                                rel="nofollow"
+                                target="_blank"
+                                >Eventos</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://mdbootstrap.com/docs/standard/" target="_blank"
+                                >Suscripciones</a
+                            >
+                        </li>
+                    </ul>
+
+                    <ul class="navbar-nav d-flex flex-row">
+                        <!-- Icons -->
+                        <li class="nav-item me-3 me-lg-0">
+                            <a
+                                class="nav-link"
+                                href="https://www.youtube.com/channel/UC5CF7mLQZhvx8O5GODZAhdA"
+                                rel="nofollow"
+                                target="_blank"
+                            >
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item me-3 me-lg-0">
+                            <a
+                                class="nav-link"
+                                href="https://www.facebook.com/mdbootstrap"
+                                rel="nofollow"
+                                target="_blank"
+                            >
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item me-3 me-lg-0">
+                            <a
+                                class="nav-link"
+                                href="https://twitter.com/MDBootstrap"
+                                rel="nofollow"
+                                target="_blank"
+                            >
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item me-3 me-lg-0">
+                            <a
+                                class="nav-link"
+                                href="https://github.com/mdbootstrap/mdb-ui-kit"
+                                rel="nofollow"
+                                target="_blank"
+                            >
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Navbar -->
+
+        <!-- Background image -->
+        <div id="intro" class="bg-image shadow-2-strong">
+            <div class="mask" style="background-color: rgba(0, 0, 0, 0.8)">
+                <div class="container d-flex align-items-center justify-content-center text-center h-100">
+                    <div class="text-white" data-mdb-theme="dark">
+                        <h1 class="mb-3">TICKESITO</h1>
+                        <h5 class="mb-4">Vive el evento de tu vida</h5>
+                        <a
+                            class="btn btn-outline-light btn-lg m-2"
+                            data-mdb-ripple-init
+                            href="https://www.youtube.com/watch?v=c9B4TPnak1A"
+                            role="button"
+                            rel="nofollow"
+                            target="_blank"
+                            >Suscribirse</a
+                        >
+                        <a
+                            class="btn btn-outline-light btn-lg m-2"
+                            data-mdb-ripple-init
+                            href="https://mdbootstrap.com/docs/standard/"
+                            target="_blank"
+                            role="button"
+                            >Comprar ticket</a
+                        >
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Background image -->
+    </header>
+    <body>
+        <main class="mt-5">
+            <div class="container">
+                <h1>Simulación de Compra de Tickets fila unica</h1>
+                <button onclick="startPurchase()" type="button" class="btn btn-warning" data-mdb-ripple-init>
+                    Iniciar Simulación
+                </button>
+
+                <div class="log" id="log"></div>
+
+                <script>
+                    // Listas de ejemplo
+                    const usuarios = [
+                        "Juan",
+                        "Ana",
+                        "Pedro",
+                        "Lucía",
+                        "Carlos",
+                        "María",
+                        "Luis",
+                        "Sofía",
+                        "David",
+                        "Camila",
+                        "Jorge",
+                        "Valentina",
+                        "Fernando",
+                        "Gabriela",
+                        "Raúl",
+                        "Isabella",
+                        "Roberto",
+                        "Elena",
+                        "Miguel",
+                        "Daniela",
+                        "Andrés",
+                        "Rosa",
+                        "Francisco",
+                        "Sara",
+                        "Pablo",
+                        "Natalia",
+                        "Héctor",
+                        "Adriana",
+                        "Alberto",
+                        "Paula",
+                        "Eduardo",
+                        "Renata",
+                        "Alejandro",
+                        "Julia",
+                        "Ricardo",
+                        "Claudia",
+                        "Manuel",
+                        "Ángela",
+                        "José",
+                        "Verónica",
+                        "Enrique",
+                        "Laura",
+                        "Tomás",
+                        "Irene",
+                        "Mario",
+                        "Lorena",
+                        "Sergio",
+                        "Florencia",
+                        "Ramiro",
+                        "Victoria",
+                        "Emilio",
+                        "Carolina",
+                        "Iván",
+                        "Catalina",
+                        "Mauricio",
+                        "Daniel",
+                        "Álvaro",
+                        "Patricia",
+                        "Diego",
+                        "Estefanía",
+                        "Federico",
+                        "Vanessa",
+                        "Agustín",
+                        "Fátima",
+                        "Rafael",
+                        "Monica",
+                        "Oscar",
+                        "Alicia",
+                        "Martín",
+                        "Rocío",
+                        "Sebastián",
+                        "Clara",
+                        "Javier",
+                        "Teresa",
+                        "Gonzalo",
+                        "Inés",
+                        "Cristian",
+                        "Eva",
+                        "Hugo",
+                        "Marina",
+                        "Matías",
+                        "Paloma",
+                        "Lucas",
+                        "Luisa",
+                        "Nicolás",
+                        "Andrea",
+                        "Felipe",
+                        "Amelia",
+                        "Guillermo",
+                        "Silvia",
+                        "Ángel",
+                        "Carmen",
+                        "Lorenzo",
+                        "Raquel",
+                        "Damián",
+                        "Liliana",
+                        "Iván",
+                        "Belén",
+                        "Vladimir",
+                        "Estrella",
+                    ];
+                    const tickets = [
+                        "Ticket 1",
+                        "Ticket 2",
+                        "Ticket 3",
+                        "Ticket 4",
+                        "Ticket 5",
+                        "Ticket 6",
+                        "Ticket 7",
+                        "Ticket 8",
+                    ];
+
+                    // Tiempo de espera en segundos
+                    const delayPerPurchase = 3 * 1000; // 3 segundos por operación
+
+                    // Función para simular la compra de un ticket
+                    function buyTicket(user, ticket) {
+                        return new Promise((resolve) => {
+                            setTimeout(() => {
+                                resolve({ user, ticket });
+                            }, delayPerPurchase);
+                        });
+                    }
+
+                    // Función para iniciar el proceso de compra
+                    async function startPurchase() {
+                        const logDiv = document.getElementById("log");
+                        logDiv.innerHTML = ""; // Limpiar el log
+                        while (usuarios.length > 0 && tickets.length > 0) {
+                            const user = usuarios.shift(); // Sacamos el primer usuario
+                            const ticket = tickets.shift(); // Sacamos el primer ticket
+
+                            // Simulamos la compra de un ticket
+                            const result = await buyTicket(user, ticket);
+
+                            // Mostramos el resultado de la compra
+                            logDiv.innerHTML += `<p>${result.user} ha comprado el ${result.ticket}</p>`;
+                        }
+
+                        if (usuarios.length > 0 && tickets.length === 0) {
+                            logDiv.innerHTML += `<p>No hay más tickets disponibles para ${usuarios.length} usuarios restantes.</p>`;
+                        } else if (usuarios.length === 0 && tickets.length > 0) {
+                            logDiv.innerHTML += `<p>No hay más usuarios para los tickets restantes.</p>`;
+                        }
+                    }
+                </script>
+            </div>
+        </main>
+    </body>
+</html>

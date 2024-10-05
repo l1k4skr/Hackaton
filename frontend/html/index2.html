@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Simulación de Compra de Tickets</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+            }
+            .log {
+                margin-top: 20px;
+            }
+            .queue {
+                margin-bottom: 20px;
+            }
+        </style>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        />
+        <!-- Google Fonts Roboto -->
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
+        />
+        <!-- MDB -->
+        <link rel="stylesheet" href="css/mdb.min.css" />
+    </head>
+    <body>
+        <div class="container">
+            <h1>Simulación de Compra de Tickets filas diferenciadas</h1>
+            <button onclick="startPurchase()" type="button" class="btn btn-primary" data-mdb-ripple-init>
+                Iniciar Simulación
+            </button>
+
+            <div id="log"></div>
+
+            <script>
+                const usuarios = [
+                    { nombre: "Juan", tipoTicket: "VIP" },
+                    { nombre: "Ana", tipoTicket: "General" },
+                    { nombre: "Pedro", tipoTicket: "VIP" },
+                    { nombre: "Lucía", tipoTicket: "General" },
+                    { nombre: "Carlos", tipoTicket: "Preferencial" },
+                    { nombre: "María", tipoTicket: "VIP" },
+                    { nombre: "Luis", tipoTicket: "General" },
+                    { nombre: "Sofía", tipoTicket: "Preferencial" },
+                    { nombre: "Camilo", tipoTicket: "General" },
+                    { nombre: "Alonso", tipoTicket: "General" },
+                    { nombre: "Pepe", tipoTicket: "General" },
+                    { nombre: "Valentina", tipoTicket: "General" },
+                    { nombre: "Osman", tipoTicket: "General" },
+                    { nombre: "Tulio", tipoTicket: "General" },
+                ];
+
+                // Colas separadas para cada tipo de ticket
+                const colas = {
+                    VIP: [],
+                    General: [],
+                    Preferencial: [],
+                };
+
+                // Distribuimos los usuarios en las colas correspondientes
+                usuarios.forEach((usuario) => {
+                    colas[usuario.tipoTicket].push(usuario);
+                });
+
+                const ticketsPorTipo = {
+                    VIP: ["VIP Ticket 1", "VIP Ticket 2", "VIP Ticket 3"],
+                    General: ["General Ticket 1", "General Ticket 2", "General Ticket 3", "General Ticket 4"],
+                    Preferencial: ["Preferencial Ticket 1", "Preferencial Ticket 2"],
+                };
+
+                const delayPerPurchase = 3 * 1000; // 3 segundos por operación
+
+                // Función para simular la compra de un ticket
+                function buyTicket(usuario, ticket) {
+                    return new Promise((resolve) => {
+                        setTimeout(() => {
+                            resolve({ usuario, ticket });
+                        }, delayPerPurchase);
+                    });
+                }
+
+                // Función para iniciar el proceso de compra en paralelo
+                async function processQueue(tipoTicket) {
+                    const logDiv = document.getElementById("log");
+                    const queueLog = document.createElement("div");
+                    queueLog.classList.add("queue");
+                    logDiv.appendChild(queueLog);
+                    queueLog.innerHTML = `<h3>Cola ${tipoTicket}</h3>`;
+
+                    while (colas[tipoTicket].length > 0 && ticketsPorTipo[tipoTicket].length > 0) {
+                        const usuario = colas[tipoTicket].shift(); // Sacamos el primer usuario de la cola
+                        const ticket = ticketsPorTipo[tipoTicket].shift(); // Sacamos el primer ticket del tipo
+
+                        // Simulamos la compra de un ticket
+                        const result = await buyTicket(usuario.nombre, ticket);
+
+                        // Mostramos el resultado de la compra
+                        queueLog.innerHTML += `<p>${result.usuario} ha comprado el ${result.ticket}</p>`;
+                    }
+
+                    if (colas[tipoTicket].length > 0 && ticketsPorTipo[tipoTicket].length === 0) {
+                        queueLog.innerHTML += `<p>No hay más tickets disponibles para ${colas[tipoTicket].length} usuarios restantes en la cola ${tipoTicket}.</p>`;
+                    } else if (colas[tipoTicket].length === 0 && ticketsPorTipo[tipoTicket].length > 0) {
+                        queueLog.innerHTML += `<p>No hay más usuarios en la cola ${tipoTicket} para los tickets restantes.</p>`;
+                    }
+                }
+
+                // Función para iniciar la simulación
+                function startPurchase() {
+                    document.getElementById("log").innerHTML = ""; // Limpiar log
+
+                    // Procesar las colas en paralelo
+                    Object.keys(colas).forEach((tipoTicket) => {
+                        processQueue(tipoTicket);
+                    });
+                }
+            </script>
+        </div>
+    </body>
+</html>
