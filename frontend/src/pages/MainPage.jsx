@@ -1,78 +1,63 @@
 import React, { useState } from 'react';
-import styles from './MainPage.module.css';
+import styles from '../styles/MainPage.module.css';
 
 const usuarios = [
-    { nombre: "Juan", tipoTicket: "VIP" },
-    { nombre: "Ana", tipoTicket: "General" },
-    { nombre: "Pedro", tipoTicket: "VIP" },
-    // Agregar más usuarios según sea necesario
+    "Juan", "Ana", "Pedro", "Lucía", "Carlos", // Agregar más usuarios según sea necesario
 ];
 
-const ticketsPorTipo = {
-    VIP: ["VIP Ticket 1", "VIP Ticket 2", "VIP Ticket 3"],
-    General: ["General Ticket 1", "General Ticket 2", "General Ticket 3", "General Ticket 4"],
-    Preferencial: ["Preferencial Ticket 1", "Preferencial Ticket 2"],
-};
+const tickets = [
+    "Ticket 1", "Ticket 2", "Ticket 3", "Ticket 4", // Agregar más tickets según sea necesario
+];
 
 const delayPerPurchase = 3000; // 3 segundos por operación
 
 const TicketPurchaseSimulator = () => {
     const [log, setLog] = useState([]);
 
-    const buyTicket = (usuario, ticket) => {
+    const buyTicket = (user, ticket) => {
         return new Promise(resolve => {
             setTimeout(() => {
-                resolve(`${usuario} ha comprado el ${ticket}`);
+                resolve(`${user} ha comprado el ${ticket}`);
             }, delayPerPurchase);
         });
     };
 
-    const processQueue = async (tipoTicket, colas) => {
-        let queueLog = [`Cola ${tipoTicket}`];
-
-        while (colas[tipoTicket].length > 0 && ticketsPorTipo[tipoTicket].length > 0) {
-            const usuario = colas[tipoTicket].shift();
-            const ticket = ticketsPorTipo[tipoTicket].shift();
-            const result = await buyTicket(usuario.nombre, ticket);
-            queueLog.push(result);
-        }
-
-        if (colas[tipoTicket].length > 0 && ticketsPorTipo[tipoTicket].length === 0) {
-            queueLog.push(`No hay más tickets disponibles para ${colas[tipoTicket].length} usuarios restantes en la cola ${tipoTicket}.`);
-        } else if (colas[tipoTicket].length === 0 && ticketsPorTipo[tipoTicket].length > 0) {
-            queueLog.push(`No hay más usuarios en la cola ${tipoTicket} para los tickets restantes.`);
-        }
-
-        setLog(log => [...log, ...queueLog]);
-    };
-
-    const startPurchase = () => {
+    const startPurchase = async () => {
         setLog([]);
-        const colas = {
-            VIP: [],
-            General: [],
-            Preferencial: [],
-        };
-        usuarios.forEach(usuario => {
-            colas[usuario.tipoTicket].push(usuario);
-        });
-        Object.keys(colas).forEach(tipoTicket => {
-            processQueue(tipoTicket, colas);
-        });
+        while (usuarios.length > 0 && tickets.length > 0) {
+            const user = usuarios.shift(); // Sacamos el primer usuario
+            const ticket = tickets.shift(); // Sacamos el primer ticket
+
+            const result = await buyTicket(user, ticket);
+            setLog(log => [...log, result]);
+        }
+
+        if (usuarios.length > 0 && tickets.length === 0) {
+            setLog(log => [...log, `No hay más tickets disponibles para ${usuarios.length} usuarios restantes.`]);
+        } else if (usuarios.length === 0 && tickets.length > 0) {
+            setLog(log => [...log, `No hay más usuarios para los tickets restantes.`]);
+        }
     };
 
     return (
         <div className={styles.body}>
-            <h1>Simulación de Compra de Tickets filas diferenciadas</h1>
-            <button onClick={startPurchase} type="button" className="btn btn-primary">
-                Iniciar Simulación
-            </button>
-            <div className={styles.log}>
-                {log.map((entry, index) => (
-                    <div key={index} className={styles.queue}>
-                        {entry}
-                    </div>
-                ))}
+            <nav className={styles.navbar}>
+                <div className={styles.container}>
+                    <a className={styles.navItem} href="#intro">Home</a>
+                    <a className={styles.navItem} href="https://www.youtube.com/channel/UC5CF7mLQZhvx8O5GODZAhdA">Eventos</a>
+                    <a className={styles.navItem} href="https://mdbootstrap.com/docs/standard/">Suscripciones</a>
+                </div>
+            </nav>
+            <div className={styles.container}>
+                <h1>Simulación de Compra de Tickets fila única</h1>
+                <button onClick={startPurchase} className={styles.button} data-mdb-ripple-init="true">
+                    Iniciar Simulación
+                </button>
+                <div className={styles.log}>
+                    {log.map((entry, index) => (
+                        <p key={index}>{entry}</p>
+                    ))}
+                </div>
             </div>
         </div>
     );

@@ -1,10 +1,47 @@
-/* styles.css */
-body {
-    font-family: Arial, sans-serif;
+/* MainPage.module.css */
+.body {
+    font-family: 'Roboto', sans-serif;
+    padding: 20px;
+    color: #fff;
 }
+
+.container {
+    max-width: 960px;
+    margin: auto;
+}
+
 .log {
     margin-top: 20px;
+    background-color: #343a40;
+    padding: 15px;
+    border-radius: 5px;
+    color: #ffffff;
 }
-.queue {
-    margin-bottom: 20px;
+
+.navbar {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #ffffff;
+    padding: 10px 0;
+}
+
+.navItem {
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+.navIcon {
+    margin-right: 10px;
+}
+
+.button {
+    background-color: #ffc107;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #e0a800;
 }
