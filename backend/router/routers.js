@@ -13,6 +13,7 @@ router.get("/", (req, res) => {
 router.post("/api/ia", async (req, res) => { 
     try {
         const response = await makeResponse(req.body);
+        console.log(response)
         res.send(response);
     } catch (error) {
         res.send({ error: error.message });

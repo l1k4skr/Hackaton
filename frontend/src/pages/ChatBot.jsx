@@ -48,36 +48,31 @@ function ChatBotComponent() {
 const ResponseFromAPI = ({ previousStep, triggerNextStep }) => {
     const [loading, setLoading] = useState(true);
     const [responseMessage, setResponseMessage] = useState('');
-    const [hasResponded, setHasResponded] = useState(false);
+    const [hasFetched, setHasFetched] = useState(false);
   
     useEffect(() => {
-      if (!hasResponded) {
-        const userInput = previousStep.value;
-        axios.post('http://localhost:3001/api/ia', { prompt: userInput }, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-        .then(response => {
-          setResponseMessage(response.data.text); // Asegúrate de que 'response.data.text' sea la propiedad correcta.
-          setHasResponded(true);
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          setResponseMessage('Hubo un error al procesar tu mensaje.');
-          setHasResponded(true);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-      }
-    }, [previousStep, hasResponded]); // Eliminamos `triggerNextStep` de las dependencias para evitar el ciclo
+      if (!hasFetched) {
+        async function fetchAPIResponse() {
+          try {
+            const { value: userInput } = previousStep;
+            const response = await axios.post('http://localhost:3001/api/ia', { prompt: userInput }, {
+              headers: { 'Content-Type': 'application/json' },
+            });
+            console.log('Response:', response);
+            setResponseMessage(response.data.message); // Ajusta según tu respuesta
+          } catch (error) {
+            console.error('Error:', error);
+            setResponseMessage('Hubo un error al procesar tu mensaje.');
+          } finally {
+            setLoading(false);
+            setHasFetched(true);
+            triggerNextStep();
+          }
+        }
   
-    useEffect(() => {
-      if (!loading && hasResponded) {
-        triggerNextStep();
+        fetchAPIResponse();
       }
-    }, [loading, hasResponded, triggerNextStep]); // Nuevo efecto para manejar el paso al siguiente trigger
+    }, [hasFetched, previousStep]); // Solo depende de hasFetched y previousStep
   
     if (loading) {
       return <div>Cargando respuesta...</div>;
@@ -85,5 +80,4 @@ const ResponseFromAPI = ({ previousStep, triggerNextStep }) => {
   
     return <div>{responseMessage}</div>;
   };
-
 export default ChatBotComponent;
